@@ -48,17 +48,13 @@ public class ShardingJDBCDemo {
         // 配置分片规则
         ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
         //真实表分布
-        TableRuleConfiguration courseTableRuleConfig = new TableRuleConfiguration("course",
-                "m$->{1..2}.course_$->{1..2}");
+        TableRuleConfiguration courseTableRuleConfig = new TableRuleConfiguration("course", "m$->{1..2}.course_$->{1..2}");
         //主键策略
-        courseTableRuleConfig.setKeyGeneratorConfig(new KeyGeneratorConfiguration("SNOWFLAKE"
-                , "cid", getProps()));
+        courseTableRuleConfig.setKeyGeneratorConfig(new KeyGeneratorConfiguration("SNOWFLAKE", "cid", getProps()));
         //真实库分布
-        courseTableRuleConfig.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("cid",
-                "m$->{cid%2+1}"));
+        courseTableRuleConfig.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("cid", "m$->{cid%2+1}"));
 
-        courseTableRuleConfig.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("cid",
-                "course_$->{cid%2+1}"));
+        courseTableRuleConfig.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("cid", "course_$->{cid%2+1}"));
         shardingRuleConfig.getTableRuleConfigs().add(courseTableRuleConfig);
         //绑定表配置
 //        shardingRuleConfig.getBindingTableGroups().add("t_order, t_order_item");
