@@ -70,23 +70,23 @@ public class ShardingRule implements BaseRule {
         Preconditions.checkArgument(null != shardingRuleConfig, "ShardingRuleConfig cannot be null.");
         Preconditions.checkArgument(null != dataSourceNames && !dataSourceNames.isEmpty(), "Data sources cannot be empty.");
         this.ruleConfiguration = shardingRuleConfig;
-        //获取所有的实际数据库
+        // 获取所有的实际数据库
         shardingDataSourceNames = new ShardingDataSourceNames(shardingRuleConfig, dataSourceNames);
-        //表路由规则
+        // 表路由规则
         tableRules = createTableRules(shardingRuleConfig);
-        //获取广播表
+        // 获取广播表
         broadcastTables = shardingRuleConfig.getBroadcastTables();
-        //绑定表
+        // 绑定表
         bindingTableRules = createBindingTableRules(shardingRuleConfig.getBindingTableGroups());
-        //创建默认的分库策略
+        //创建默认的分库策略，若未设置默认为NoneShardingStrategy
         defaultDatabaseShardingStrategy = createDefaultShardingStrategy(shardingRuleConfig.getDefaultDatabaseShardingStrategyConfig());
-        //创建默认的分表策略
+        //创建默认的分表策略，若未设置默认为NoneShardingStrategy
         defaultTableShardingStrategy = createDefaultShardingStrategy(shardingRuleConfig.getDefaultTableShardingStrategyConfig());
-        //分片键
+        // 分片键
         defaultShardingKeyGenerator = createDefaultKeyGenerator(shardingRuleConfig.getDefaultKeyGeneratorConfig());
-        //主从规则
+        // 主从规则
         masterSlaveRules = createMasterSlaveRules(shardingRuleConfig.getMasterSlaveRuleConfigs());
-        //加密规则
+        // 加密规则
         encryptRule = createEncryptRule(shardingRuleConfig.getEncryptRuleConfig());
     }
 

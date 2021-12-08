@@ -114,8 +114,7 @@ public final class TableRule {
         generateKeyColumn = null != keyGeneratorConfiguration && !Strings.isNullOrEmpty(keyGeneratorConfiguration.getColumn()) ? keyGeneratorConfiguration.getColumn() : defaultGenerateKeyColumn;
         //分片键 有UUID和SNOWFLAKE两个实现类
         //SPI: 获取分布式主键
-        shardingKeyGenerator = containsKeyGeneratorConfiguration(tableRuleConfig)
-                ? new ShardingKeyGeneratorServiceLoader().newService(tableRuleConfig.getKeyGeneratorConfig().getType(), tableRuleConfig.getKeyGeneratorConfig().getProperties()) : null;
+        shardingKeyGenerator = containsKeyGeneratorConfiguration(tableRuleConfig) ? new ShardingKeyGeneratorServiceLoader().newService(tableRuleConfig.getKeyGeneratorConfig().getType(), tableRuleConfig.getKeyGeneratorConfig().getProperties()) : null;
         checkRule(dataNodes);
     }
     

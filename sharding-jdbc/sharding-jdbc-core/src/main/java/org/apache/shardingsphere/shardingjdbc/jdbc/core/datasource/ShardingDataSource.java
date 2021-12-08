@@ -39,9 +39,9 @@ import java.util.Properties;
  */
 @Getter
 public class ShardingDataSource extends AbstractDataSourceAdapter {
-    
+
     private final ShardingRuntimeContext runtimeContext;
-    
+
     static {
         //SPI: 加载路由组件
         NewInstanceServiceLoader.register(RouteDecorator.class);
@@ -50,21 +50,19 @@ public class ShardingDataSource extends AbstractDataSourceAdapter {
         //SPI: 加载结果处理组件
         NewInstanceServiceLoader.register(ResultProcessEngine.class);
     }
-    
+
     public ShardingDataSource(final Map<String, DataSource> dataSourceMap, final ShardingRule shardingRule, final Properties props) throws SQLException {
-        //获取数据库类型
-        super(dataSourceMap);
-        //检查数据库类型
-        checkDataSourceType(dataSourceMap);
+        super(dataSourceMap); // 获取数据库类型
+        checkDataSourceType(dataSourceMap); // 检查数据库类型
         runtimeContext = new ShardingRuntimeContext(dataSourceMap, shardingRule, props, getDatabaseType());
     }
-    
+
     private void checkDataSourceType(final Map<String, DataSource> dataSourceMap) {
         for (DataSource each : dataSourceMap.values()) {
             Preconditions.checkArgument(!(each instanceof MasterSlaveDataSource), "Initialized data sources can not be master-slave data sources.");
         }
     }
-    
+
     @Override
     public final ShardingConnection getConnection() {
         return new ShardingConnection(getDataSourceMap(), runtimeContext, TransactionTypeHolder.get());

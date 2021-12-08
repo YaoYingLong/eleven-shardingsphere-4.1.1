@@ -31,26 +31,26 @@ import java.util.List;
  */
 @Getter
 public class MasterSlaveRule implements BaseRule {
-    
+
     private final String name;
-    
+
     private final String masterDataSourceName;
-    
+
     private final List<String> slaveDataSourceNames;
-    
+
     private final MasterSlaveLoadBalanceAlgorithm loadBalanceAlgorithm;
-    
+
     private final MasterSlaveRuleConfiguration ruleConfiguration;
-    
+
     public MasterSlaveRule(final String name, final String masterDataSourceName, final List<String> slaveDataSourceNames, final MasterSlaveLoadBalanceAlgorithm loadBalanceAlgorithm) {
         this.name = name;
         this.masterDataSourceName = masterDataSourceName;
         this.slaveDataSourceNames = slaveDataSourceNames;
         this.loadBalanceAlgorithm = null == loadBalanceAlgorithm ? new MasterSlaveLoadBalanceAlgorithmServiceLoader().newService() : loadBalanceAlgorithm;
-        ruleConfiguration = new MasterSlaveRuleConfiguration(name, masterDataSourceName, slaveDataSourceNames, 
+        ruleConfiguration = new MasterSlaveRuleConfiguration(name, masterDataSourceName, slaveDataSourceNames,
                 new LoadBalanceStrategyConfiguration(this.loadBalanceAlgorithm.getType(), this.loadBalanceAlgorithm.getProperties()));
     }
-    
+
     public MasterSlaveRule(final MasterSlaveRuleConfiguration config) {
         name = config.getName();
         masterDataSourceName = config.getMasterDataSourceName();
@@ -58,13 +58,14 @@ public class MasterSlaveRule implements BaseRule {
         loadBalanceAlgorithm = createMasterSlaveLoadBalanceAlgorithm(config.getLoadBalanceStrategyConfiguration());
         ruleConfiguration = config;
     }
-    
+
     private MasterSlaveLoadBalanceAlgorithm createMasterSlaveLoadBalanceAlgorithm(final LoadBalanceStrategyConfiguration loadBalanceStrategyConfiguration) {
         MasterSlaveLoadBalanceAlgorithmServiceLoader serviceLoader = new MasterSlaveLoadBalanceAlgorithmServiceLoader();
-        return null == loadBalanceStrategyConfiguration
-                ? serviceLoader.newService() : serviceLoader.newService(loadBalanceStrategyConfiguration.getType(), loadBalanceStrategyConfiguration.getProperties());
+        return null == loadBalanceStrategyConfiguration ?
+                serviceLoader.newService() :
+                serviceLoader.newService(loadBalanceStrategyConfiguration.getType(), loadBalanceStrategyConfiguration.getProperties());
     }
-    
+
     /**
      * Judge whether contain data source name.
      *
