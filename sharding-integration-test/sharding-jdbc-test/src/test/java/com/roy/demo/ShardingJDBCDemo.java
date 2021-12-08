@@ -27,38 +27,37 @@ public class ShardingJDBCDemo {
 
     public static void main(String[] args) throws SQLException {
 
-        //=======一、配置数据库
+        // 一、配置数据库
         Map<String, DataSource> dataSourceMap = new HashMap<>(2);//为两个数据库的datasource
-        // 配置第一个数据源
+        // 配置第一个数据源m1
         HikariDataSource dataSource0 = new HikariDataSource();
         dataSource0.setDriverClassName("com.mysql.jdbc.Driver");
         dataSource0.setJdbcUrl("jdbc:mysql://localhost:3306/coursedb?serverTimezone=GMT%2B8&useSSL=false");
         dataSource0.setUsername("root");
         dataSource0.setPassword("root");
         dataSourceMap.put("m1", dataSource0);
-        // 配置第二个数据源
+        // 配置第二个数据源m2
         HikariDataSource dataSource1 = new HikariDataSource();
         dataSource1.setDriverClassName("com.mysql.jdbc.Driver");
         dataSource1.setJdbcUrl("jdbc:mysql://localhost:3306/coursedb2?serverTimezone=GMT%2B8&useSSL=false");
         dataSource1.setUsername("root");
         dataSource1.setPassword("root");
         dataSourceMap.put("m2", dataSource1);
-
-        //=======二、配置分库分表策略
+        //二、配置分库分表策略
         // 配置分片规则
         ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
-        //真实表分布
+        // 真实表分布，逻辑表，以及数据节点
         TableRuleConfiguration courseTableRuleConfig = new TableRuleConfiguration("course", "m$->{1..2}.course_$->{1..2}");
-        //主键策略
+        // 主键策略
         courseTableRuleConfig.setKeyGeneratorConfig(new KeyGeneratorConfiguration("SNOWFLAKE", "cid", getProps()));
-        //真实库分布
+        // 分库分片策略
         courseTableRuleConfig.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("cid", "m$->{cid%2+1}"));
-
+//      // 分表分片策略
         courseTableRuleConfig.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("cid", "course_$->{cid%2+1}"));
         shardingRuleConfig.getTableRuleConfigs().add(courseTableRuleConfig);
-        //绑定表配置
-//        shardingRuleConfig.getBindingTableGroups().add("t_order, t_order_item");
-        //配置默认的分库策略 可选
+        // 绑定表配置
+        // shardingRuleConfig.getBindingTableGroups().add("t_order, t_order_item");
+        // 配置默认的分库策略 可选
         shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("cid", "m$->{cid%2+1}"));
         //配置默认的分表策略 可选
         shardingRuleConfig.setDefaultTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("cid", new PreciseShardingAlgorithm<Long>() {
@@ -73,21 +72,19 @@ public class ShardingJDBCDemo {
             }
         }));
 
-        //三、配置属性值
+        // 三、配置属性值
         Properties properties = new Properties();
-        //打开日志输出
+        // 打开日志输出
         properties.setProperty("sql.show", "true");
         //K1 创建ShardingSphere的数据源 ShardingDataSource
         DataSource dataSource = ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfig, properties);
-
         //-------------测试部分-----------------//
         ShardingJDBCDemo test = new ShardingJDBCDemo();
         //建表
 //        test.droptable(dataSource);
 //        test.createtable(dataSource);
-
         //插入数据
-//        test.addcourse(dataSource);
+        test.addcourse(dataSource);
         //K1 调试的起点 查询数据
         test.querycourse(dataSource);
     }
@@ -110,12 +107,12 @@ public class ShardingJDBCDemo {
     public void querycourse(DataSource dataSource) throws SQLException {
         Connection conn = null;
         try {
-            //ShardingConnectioin
+            // ShardingConnectioin
             conn = dataSource.getConnection();
-            //ShardingStatement
+            // ShardingStatement
             Statement statement = conn.createStatement();
             String sql = "SELECT cid,cname,user_id,cstatus from course";
-            //ShardingResultSet
+            // ShardingResultSet
             ResultSet result = statement.executeQuery(sql);
             while (result.next()) {
                 System.out.println("result:" + result.getInt("cid"));
@@ -139,9 +136,7 @@ public class ShardingJDBCDemo {
 
     private long executeAndGetGeneratedKey(final DataSource dataSource, final String sql) throws SQLException {
         long result = -1;
-        try (
-                Connection conn = dataSource.getConnection();
-                Statement statement = conn.createStatement()) {
+        try (Connection conn = dataSource.getConnection(); Statement statement = conn.createStatement()) {
             statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {

@@ -5,7 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e6411bc1-eb99-4a1e-b004-85dbd1409115" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sharding-core/sharding-core-common/src/main/java/org/apache/shardingsphere/core/rule/ShardingRule.java" beforeDir="false" afterPath="$PROJECT_DIR$/sharding-core/sharding-core-common/src/main/java/org/apache/shardingsphere/core/rule/ShardingRule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sharding-core/sharding-core-common/src/main/java/org/apache/shardingsphere/core/rule/TableRule.java" beforeDir="false" afterPath="$PROJECT_DIR$/sharding-core/sharding-core-common/src/main/java/org/apache/shardingsphere/core/rule/TableRule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sharding-integration-test/sharding-jdbc-test/src/test/java/com/roy/demo/ShardingJDBCDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/sharding-integration-test/sharding-jdbc-test/src/test/java/com/roy/demo/ShardingJDBCDemo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sharding-jdbc/sharding-jdbc-core/src/main/java/org/apache/shardingsphere/shardingjdbc/api/ShardingDataSourceFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/sharding-jdbc/sharding-jdbc-core/src/main/java/org/apache/shardingsphere/shardingjdbc/api/ShardingDataSourceFactory.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,13 +92,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -171,6 +178,7 @@
       <workItem from="1609988776418" duration="11424000" />
       <workItem from="1610081088223" duration="12388000" />
       <workItem from="1638875527263" duration="5793000" />
+      <workItem from="1638967507728" duration="2253000" />
     </task>
     <task id="LOCAL-00001" summary="feat: project init">
       <created>1638887243305</created>
@@ -314,6 +322,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />

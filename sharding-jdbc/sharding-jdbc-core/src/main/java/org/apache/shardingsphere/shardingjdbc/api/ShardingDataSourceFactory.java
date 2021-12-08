@@ -43,9 +43,8 @@ public final class ShardingDataSourceFactory {
      * @return sharding data source
      * @throws SQLException SQL exception
      */
-    public static DataSource createDataSource(
-            final Map<String, DataSource> dataSourceMap, final ShardingRuleConfiguration shardingRuleConfig, final Properties props) throws SQLException {
-        //创建ShardingRule以及ShardingDataSource实例
+    public static DataSource createDataSource(final Map<String, DataSource> dataSourceMap, final ShardingRuleConfiguration shardingRuleConfig, final Properties props) throws SQLException {
+        // 创建ShardingRule以及ShardingDataSource实例
         return new ShardingDataSource(dataSourceMap, new ShardingRule(shardingRuleConfig, dataSourceMap.keySet()), props);
     }
 }

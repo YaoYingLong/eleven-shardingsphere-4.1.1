@@ -99,13 +99,11 @@ public final class TableRule {
     }
     //K2 构建分表策略
     public TableRule(final TableRuleConfiguration tableRuleConfig, final ShardingDataSourceNames shardingDataSourceNames, final String defaultGenerateKeyColumn) {
-        //获取逻辑表
-        logicTable = tableRuleConfig.getLogicTable().toLowerCase();
+        logicTable = tableRuleConfig.getLogicTable().toLowerCase(); // 获取逻辑表
         List<String> dataNodes = new InlineExpressionParser(tableRuleConfig.getActualDataNodes()).splitAndEvaluate();
         dataNodeIndexMap = new HashMap<>(dataNodes.size(), 1);
         //获取实际数据库列表，收集到actualTables
-        actualDataNodes = isEmptyDataNodes(dataNodes)
-                ? generateDataNodes(tableRuleConfig.getLogicTable(), shardingDataSourceNames.getDataSourceNames()) : generateDataNodes(dataNodes, shardingDataSourceNames.getDataSourceNames());
+        actualDataNodes = isEmptyDataNodes(dataNodes) ? generateDataNodes(tableRuleConfig.getLogicTable(), shardingDataSourceNames.getDataSourceNames()) : generateDataNodes(dataNodes, shardingDataSourceNames.getDataSourceNames());
         actualTables = getActualTables();
         //分库策略
         databaseShardingStrategy = null == tableRuleConfig.getDatabaseShardingStrategyConfig() ? null : ShardingStrategyFactory.newInstance(tableRuleConfig.getDatabaseShardingStrategyConfig());
